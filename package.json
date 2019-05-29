@@ -1,0 +1,25 @@
+{
+  "name": "webpack-project",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "start": "webpack-dev-server --mode development --watch",
+    "check": "node_modules/.bin/eslint ./app/**/**.js",
+    "test": "jest",
+    "deploy": "python deploy.py"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-jest": "^24.7.1",
+    "babel-loader": "^8.0.5",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.5.1",
+    "jest": "^24.7.1",
+    "jest-cli": "^24.7.1",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {}
+}
