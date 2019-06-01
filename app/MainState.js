@@ -1,5 +1,6 @@
 
 import Planet from './Planet';
+import Builder from './Builder';
 
 export default class MainState extends Phaser.State {
 
@@ -25,21 +26,10 @@ export default class MainState extends Phaser.State {
     let debugKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
     debugKey.onDown.add(this.toggleDebug, this);
 
-		this.createBlock(400, 200);
-
 		new Planet(this, (game.width-600)/2, 300);
 
-		game.input.onDown.add(this.onMouseDown, this);
-	}
-
-  createBlock(x, y) {
-		let block = this.game.add.sprite(x, y, 'block');
-		this.game.physics.box2d.enable(block);
-		return block;
-	}
-
-	onMouseDown(pointer) {
-		this.createBlock(pointer.x, pointer.y);
+		let builder = new Builder(game);
+		builder.createBlock(400, 200);
 	}
 
 	update() {
