@@ -4,14 +4,14 @@ import MainScene from './MainScene';
 
 const config = {
 	type: Phaser.AUTO,
-	width: 800,
+	width: 1024,
 	height: 600,
 	parent: 'game',
 	backgroundColor: '#efefef',
 	physics: {
 		default: 'matter',
 		matter: {
-				enableSleep: false,
+				enableSleep: true,
 				debug: true,
 				debugShowInternalEdges: true,
 				debugShowConvexHulls: true
