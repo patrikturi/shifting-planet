@@ -1,23 +1,13 @@
+import MainState from "./MainState";
+
 /* eslint no-unused-vars: "warn" */
+const DEBUG_BUILD = true;
 
-import MainScene from './MainScene';
+window.onload = function() {
 
-const config = {
-	type: Phaser.AUTO,
-	width: 1024,
-	height: 600,
-	parent: 'game',
-	backgroundColor: '#efefef',
-	physics: {
-		default: 'matter',
-		matter: {
-				enableSleep: true,
-				debug: true,
-				debugShowInternalEdges: true,
-				debugShowConvexHulls: true
-		}
-	},
-	scene: MainScene
+	let game = new Phaser.Game(1024, 600, Phaser.AUTO, 'Shifting Planet');
+
+	game.isDebug = DEBUG_BUILD;
+	game.state.add('MainState', MainState);
+	game.state.start('MainState');
 };
-
-new Phaser.Game(config);
