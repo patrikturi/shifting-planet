@@ -17,7 +17,8 @@ module.exports = {
     "rules": {
 		"no-console": ["error", {
 			"allow": ["error", "warn", "log"]
-		}]
+		}],
+		"no-unused-vars": "warn"
     },
 	"globals": {
 		"Phaser": true

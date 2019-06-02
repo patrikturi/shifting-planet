@@ -27,6 +27,8 @@ export default class MainState extends Phaser.State {
 		game.physics.box2d.gravity.y = 1000;
 		game.physics.box2d.setBoundsToWorld();
 		game.physics.box2d.debugDraw.joints = true;
+		// Do not show popup on right click
+		game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
 		let debugKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
 		debugKey.onDown.add(this.toggleDebug, this);
@@ -50,6 +52,7 @@ export default class MainState extends Phaser.State {
 		if(this.gameOver) {
 			return;
 		}
+		this.builder.update();
 	}
 
 	render(game) {
