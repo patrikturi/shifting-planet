@@ -15,6 +15,7 @@ export default class MainState extends Phaser.State {
 	preload(game) {
 		game.load.image('sky', 'assets/sky.jpg');
 		game.load.image('block', 'assets/block.png');
+		game.load.image('stone', 'assets/stone.png');
 	}
 
 	create(game) {
