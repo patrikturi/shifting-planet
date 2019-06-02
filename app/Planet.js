@@ -5,6 +5,9 @@ const PLANET_HEIGHT = 200;
 const PLANET_SURFACE_POINTS = 10;
 const PLANET_SURFACE_VERTICES = PLANET_SURFACE_POINTS*2;
 
+const PLANET_COLOR = 0xd8ebe6;
+const PLANET_OUTLINE_COLOR = 0x9F9F9F;
+
 export default class Planet {
 
   constructor(game, x, y) {
@@ -34,7 +37,8 @@ export default class Planet {
   _applyShape(coords) {
     this.polygon.setTo(coords);
     this.graphics.clear();
-    this.graphics.beginFill(0xFF33ff);
+    this.graphics.lineStyle(2, PLANET_OUTLINE_COLOR, 1.0);
+    this.graphics.beginFill(PLANET_COLOR);
     this.graphics.drawPolygon(this.polygon.points);
     this.graphics.endFill();
 

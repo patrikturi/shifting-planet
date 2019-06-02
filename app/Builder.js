@@ -1,4 +1,6 @@
 
+const BLOCK_COLOR = '#825830';
+
 export default class Builder {
   constructor(game) {
     this.game = game;
@@ -45,8 +47,8 @@ export default class Builder {
 
       // // draw to the canvas context like normal
       bmd.ctx.beginPath();
-      bmd.ctx.rect(0,0,128,128);
-      bmd.ctx.fillStyle = '#ff0000';
+      bmd.ctx.rect(0,0,length,8);
+      bmd.ctx.fillStyle = BLOCK_COLOR;
       bmd.ctx.fill();
 
 
