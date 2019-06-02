@@ -182,4 +182,13 @@ export default class Builder {
     stone.scale.setTo(scale+0.05);
     this.createdItems.push(stone);
   }
+
+  render() {
+    if(this.firstPoint) {
+      let x = this.game.input.mousePointer.x;
+      let y = this.game.input.mousePointer.y;
+      let line = new Phaser.Line(this.firstPoint.x, this.firstPoint.y, x, y);
+      this.game.debug.geom(line);
+    }
+  }
 }

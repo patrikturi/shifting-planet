@@ -113,6 +113,8 @@ export default class MainState extends Phaser.State {
 		if(game.debugBuild && this.debug) {
 			game.debug.box2dWorld();
 		}
+
+		this.builder.render()
 	}
 
 	toggleDebug() {
