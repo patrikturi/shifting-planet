@@ -28,8 +28,13 @@ export default class Planet {
 
     this.body = new Phaser.Physics.Box2D.Body(this.game, null, x, y, 0);
     this.body.static = true;
+    this.body.friction = 0.8;
 
     this._applyShape(this.coords);
+
+    let pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.TAB);
+    pauseKey.onDown.add(this.togglePause, this);
+    this.paused = false;
 
     game.time.events.loop(Phaser.Timer.SECOND / 2.0, this.updateShape, this);
   }
@@ -43,9 +48,12 @@ export default class Planet {
     this.graphics.endFill();
 
     this.body.setPolygon(coords);
-}
+  }
 
   updateShape() {
+    if(this.paused) {
+      return;
+    }
 
 		for(let i=2; i<PLANET_SURFACE_VERTICES-1; i+=2) {
 			let inc = randInt(4);
@@ -60,4 +68,8 @@ export default class Planet {
 		this._applyShape(this.coords);
 	}
 
+  // Pause/resume changing shape
+  togglePause() {
+    this.paused = !this.paused;
+  }
 }
