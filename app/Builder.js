@@ -17,14 +17,13 @@ export default class Builder {
     this.currentItem = null;
     this.createdItems = [];
 
+    this.menuRect = new Phaser.Rectangle(625, 10, 215, 75);
+
     this.previewStone = game.add.sprite(0, 0, 'stone');
     this.previewStone.scale.setTo(STONE_SCALE);
     this.previewStone.alpha = 0.7;
     this.previewStone.anchor.setTo(0.5, 0.5);
     this.previewStone.visible = false;
-
-    let itemKey = game.input.keyboard.addKey(Phaser.Keyboard.E);
-    itemKey.onDown.add(this.nextItem, this);
 
     this.nextItem();
   }
@@ -36,6 +35,18 @@ export default class Builder {
     }
     this.currentItem = PlaceableItems[this.currentItemIndex];
 
+    this._selectionChanged();
+  }
+
+  selectItem(name) {
+    this.currentItem = name;
+    this.currentItemIndex = PlaceableItems.indexOf(this.currentItem);
+    this.firstPoint = null;
+
+    this._selectionChanged();
+  }
+
+  _selectionChanged() {
     if(this.currentItem === 'stone') {
       this.previewStone.visible = true;
     } else {
@@ -46,6 +57,10 @@ export default class Builder {
   }
 
   onMouseDown(pointer) {
+    // Skip if clicking on/near the menu icons
+    if(Phaser.Rectangle.contains(this.menuRect, pointer.x, pointer.y)) {
+      return;
+    }
     if(pointer.rightButton.isDown) {
       this._onRightClick(pointer);
     }
@@ -53,7 +68,6 @@ export default class Builder {
       return;
     }
     // Skip if clicked on something
-    // TODO: will need the same for UI
     let bodiesUnderMouse = this.game.physics.box2d.getBodiesAtPoint(pointer.x, pointer.y);
 
     if(bodiesUnderMouse.length == 0) {
@@ -86,10 +100,19 @@ export default class Builder {
   }
 
   update() {
+    // TODO: onMouseMoved
     let x = this.game.input.mousePointer.x;
     let y = this.game.input.mousePointer.y;
     this.previewStone.position.x = x;
     this.previewStone.position.y = y;
+
+    if(Phaser.Rectangle.contains(this.menuRect, x, y)) {
+      if(this.previewStone.visible) {
+        this.previewStone.visible = false;
+      }
+    } else if(!this.previewStone.visible && this.currentItem === 'stone') {
+      this.previewStone.visible = true;
+    }
   }
   createBlock(x, y) {
     let block = this.game.add.sprite(x, y, 'block');
