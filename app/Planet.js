@@ -4,6 +4,7 @@ const PLANET_WIDTH = 600;
 const PLANET_HEIGHT = 200;
 const PLANET_SURFACE_POINTS = 40;
 const PLANET_SURFACE_VERTICES = PLANET_SURFACE_POINTS*2;
+const PLANET_TOTAL_POINTS = PLANET_SURFACE_POINTS + 3;
 
 const PLANET_COLOR = 0xd8ebe6;
 const PLANET_OUTLINE_COLOR = 0x9F9F9F;
@@ -30,6 +31,8 @@ export default class Planet {
     this.body = new Phaser.Physics.Box2D.Body(this.game, null, x, y, 0);
     this.body.static = true;
     this.body.friction = 0.8;
+    // Fixtures (triangles in this case) attached to the body
+    this.fixtures = [];
 
     this._applyShape(this.points);
 
@@ -142,7 +145,30 @@ export default class Planet {
     this.graphics.drawPolygon(this.polygon.points);
     this.graphics.endFill();
 
-    this.body.setPolygon(coords);
+    this._buildPhysicsShape(points);
+  }
+
+  _buildPhysicsShape(points) {
+    for(let f of this.fixtures) {
+      this.body.removeFixture(f);
+    }
+    this.fixtures = [];
+
+    const step = PLANET_WIDTH/PLANET_SURFACE_POINTS;
+    const p3 = {x: 0, y: points[PLANET_TOTAL_POINTS-1].y};
+    const p4 = {x: 0, y: p3.y};
+    for(let i=0; i<PLANET_SURFACE_POINTS; i++) {
+      let p = points[i];
+      let p2 = points[i+1];
+      p3.x = i*step;
+      p4.x = (i+1)*step;
+      let coords = [p.x, p.y, p2.x, p2.y, p3.x, p3.y];
+      let fixture = this.body.addPolygon(coords);
+      this.fixtures.push(fixture);
+      coords = [p3.x, p3.y, p4.x, p4.y, p2.x, p2.y];
+      fixture = this.body.addPolygon(coords);
+      this.fixtures.push(fixture);
+    }
   }
 
   updateShape() {
