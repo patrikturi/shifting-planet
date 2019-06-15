@@ -1,11 +1,13 @@
 
 const STICK_COLOR = '#825830';
 
-const STICK_MAX_LENGTH = 64;
+const STICK_MAX_LENGTH = 90;
 const STICK_HEIGHT = 8;
 const STICK_MIN_LENGTH = STICK_HEIGHT;
-const STICK_MASS = 5;
-const STONE_SCALE = 0.33;
+const STICK_MASS = 20;
+const BLOCK_MASS = 10;
+const STONE_MASS = 40;
+const STONE_SCALE = 0.25;
 
 const PlaceableItems = ['stick', 'stone', 'remove'];
 
@@ -114,12 +116,14 @@ export default class Builder {
       this.previewStone.visible = true;
     }
   }
+
   createBlock(x, y) {
     let block = this.game.add.sprite(x, y, 'block');
+    block.scale.setTo(0.75);
     this.game.physics.box2d.enable(block);
-    block.body.mass = 20;
+    block.body.mass = BLOCK_MASS;
     block.body.friction = 0.5;
-    block.scale.setTo(1.05);
+    block.scale.setTo(0.8);//1.05
 		return block;
   }
 
@@ -177,8 +181,8 @@ export default class Builder {
     let stone = this.game.add.sprite(x, y, 'stone');
     stone.scale.setTo(scale);
     this.game.physics.box2d.enable(stone);
-    stone.body.mass = 100;
-    stone.body.friction = 0.8;
+    stone.body.mass = STONE_MASS;
+    stone.body.friction = 1;
     stone.scale.setTo(scale+0.05);
     this.createdItems.push(stone);
   }
