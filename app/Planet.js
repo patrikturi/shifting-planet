@@ -14,14 +14,20 @@ export default class Planet {
     this.game = game;
     // array of coordinates for vertices of the polygon
     this.coords = [];
+    // same array with points for easier handling
+    this.points = [];
     // points specified clockwise
 		for(let i=0; i<PLANET_SURFACE_POINTS; i++) {
-			const step = PLANET_WIDTH/PLANET_SURFACE_POINTS;
-			this.coords.push(i*step, 150);
-		}
-		this.coords.push(PLANET_WIDTH, 0);
-		this.coords.push(PLANET_WIDTH, PLANET_HEIGHT, 0, PLANET_HEIGHT);
-    this.coords[1] = 50;
+      const step = PLANET_WIDTH/PLANET_SURFACE_POINTS;
+      this.points.push({x: i*step, y: 150});
+			this.coords.push(0,0);
+    }
+
+    this.points.push({x: PLANET_WIDTH, y: 0});
+    this.coords.push(0, 0);
+    this.points.push({x: PLANET_WIDTH, y: PLANET_HEIGHT}, {x: 0, y: PLANET_HEIGHT});
+    this.coords.push(0, 0, 0, 0);
+    this.points[0].y = 50;
 
     this.polygon = new Phaser.Polygon();
     this.graphics = game.add.graphics(x, y);
@@ -30,7 +36,7 @@ export default class Planet {
     this.body.static = true;
     this.body.friction = 0.8;
 
-    this._applyShape(this.coords);
+    this._applyShape(this.points);
 
     let pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.TAB);
     pauseKey.onDown.add(this.togglePause, this);
@@ -39,7 +45,18 @@ export default class Planet {
     game.time.events.loop(Phaser.Timer.SECOND / 2.0, this.updateShape, this);
   }
 
-  _applyShape(coords) {
+  _pointsToCoords(points) {
+    let i=0;
+    for(const point of points) {
+      this.coords[i] = point.x;
+      this.coords[i+1] = point.y;
+      i+=2;
+    }
+    return this.coords;
+  }
+
+  _applyShape(points) {
+    const coords = this._pointsToCoords(points);
     this.polygon.setTo(coords);
     this.graphics.clear();
     this.graphics.lineStyle(2, PLANET_OUTLINE_COLOR, 1.0);
@@ -55,17 +72,15 @@ export default class Planet {
       return;
     }
 
-		for(let i=2; i<PLANET_SURFACE_VERTICES-1; i+=2) {
-			let inc = randInt(4);
-			if(this.coords[i+1]-inc >= 0) {
-				this.coords[i+1] -= inc;
+    for(let i=1; i<PLANET_SURFACE_POINTS; i++) {
+      const point = this.points[i];
+      let inc = randInt(4);
+			if(point.y-inc >= 0) {
+				point.y -= inc;
 			}
-			// if(point.y+inc < PLANET_HEIGHT) {
-			// 	point.y += inc;
-			// }
-		}
+    }
 
-		this._applyShape(this.coords);
+		this._applyShape(this.points);
 	}
 
   // Pause/resume changing shape
