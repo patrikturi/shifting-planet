@@ -14,6 +14,7 @@ export default class MainState extends Phaser.State {
 	}
 
 	preload(game) {
+		game.load.bitmapFont('text_font', 'assets/text_0.png', 'assets/text.xml');
 		game.load.image('sky', 'assets/sky.jpg');
 		game.load.image('block', 'assets/house.png');
 		game.load.image('stone', 'assets/stone.png');
@@ -75,6 +76,8 @@ export default class MainState extends Phaser.State {
 		game.add.sprite(startX, startY, 'stick_icon');
 		game.add.sprite(startX+step, startY, 'stone_icon');
 		game.add.sprite(startX+2*step, startY, 'remove_icon');
+
+		Level.initScene();
 	}
 
 	nextBuildItem() {
