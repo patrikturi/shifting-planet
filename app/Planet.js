@@ -48,17 +48,17 @@ export default class Planet {
     // same array with points for easier handling
     this.points = [];
     // points specified clockwise
+    let initial_height = 100;
 		for(let i=0; i<PLANET_SURFACE_POINTS; i++) {
       const step = PLANET_WIDTH/PLANET_SURFACE_POINTS;
-      this.points.push({x: i*step, y: 100});
+      this.points.push({x: i*step, y: initial_height});
 			this.coords.push(0,0);
     }
 
-    this.points.push({x: PLANET_WIDTH, y: 0});
+    this.points.push({x: PLANET_WIDTH, y: initial_height});
     this.coords.push(0, 0);
     this.points.push({x: PLANET_WIDTH, y: PLANET_HEIGHT}, {x: 0, y: PLANET_HEIGHT});
     this.coords.push(0, 0, 0, 0);
-    this.points[0].y = 50;
   }
 
 
@@ -194,5 +194,6 @@ export default class Planet {
   // Pause/resume changing shape
   togglePause() {
     this.paused = !this.paused;
+    this.game.physics.box2d.paused = !this.game.physics.box2d.paused;
   }
 }

@@ -15,6 +15,7 @@ export default class MainState extends Phaser.State {
 
 	preload(game) {
 		game.load.bitmapFont('text_font', 'assets/text_0.png', 'assets/text.xml');
+		game.load.bitmapFont('title_font', 'assets/title_0.png', 'assets/title.xml');
 		game.load.image('sky', 'assets/sky.jpg');
 		game.load.image('block', 'assets/house.png');
 		game.load.image('stone', 'assets/stone.png');
@@ -55,8 +56,14 @@ export default class MainState extends Phaser.State {
 		this.planet = new Planet(this, (game.width-600)/2, 300);
 
 		this.builder = new Builder(game);
-		let block = this.builder.createBlock(400, 380);
-		Level.addBlock(block);
+
+		const block_cnt = 4;
+		const planet_width = 600;
+		const start_pos = 225 + 35 + planet_width/2 - block_cnt*planet_width/2/6;
+		for(let i=0; i<block_cnt; i++) {
+			let block = this.builder.createBlock(start_pos + planet_width/6*i, 380);
+			Level.addBlock(block);
+		}
 		//TODO
 		//block.tint = 0xFF0000;
 

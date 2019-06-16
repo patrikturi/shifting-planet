@@ -220,7 +220,7 @@ export default class Builder {
     this.game.physics.box2d.enable(stone);
     stone.body.mass = STONE_MASS;
     stone.body.friction = 1;
-    stone.scale.setTo(scale+0.05);
+    stone.scale.setTo(scale+0.02);
     this.createdItems.push(stone);
   }
 

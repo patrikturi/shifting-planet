@@ -8,18 +8,25 @@ const Level = {
     this.game = game;
   },
   initScene() {
-    this.scoreText = this.game.add.bitmapText(210, 35, 'text_font', '');
+    this.scoreText = this.game.add.bitmapText(210, 35, 'text_font', '',28);
     this.scoreText.tint = 0x000000;
+    // let title = this.game.add.bitmapText(400, 300, 'title_font', 'Game over!',64);
+    // title.tint = 0x39FF14;
     this.updateScore();
     this.game.time.events.loop(Phaser.Timer.SECOND, this.timerTick, this);
   },
   timerTick() {
-    this.timeLeft -= 1;
-    this.updateScore();
+    if(this.timeLeft > 0) {
+      this.timeLeft -= 1;
+      this.updateScore();
+    }
   },
   updateScore() {
     let min = Math.floor(this.timeLeft / 60);
     let sec = this.timeLeft % 60;
+    if(sec < 10) {
+      sec = `0${sec}`;
+    }
     this.scoreText.text = `Houses: ${this.blocks.length}   Time: ${min}:${sec}`;
   },
   addBlock(block) {
