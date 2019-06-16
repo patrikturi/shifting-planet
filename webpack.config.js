@@ -2,7 +2,7 @@
 const path = require('path');
 module.exports = {
   mode: 'development',
-  entry: path.join(__dirname, 'app', 'game.js'),
+  entry: path.join(__dirname, 'app', 'main.js'),
   output: {
     path: path.join(__dirname, 'dev'),
     publicPath: '/dev/',

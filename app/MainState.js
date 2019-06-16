@@ -1,6 +1,7 @@
 
 import Planet from './Planet';
 import Builder from './Builder';
+import Level from './Level';
 
 const BACKGROUND_COLOR = '#fafafa';
 
@@ -14,12 +15,13 @@ export default class MainState extends Phaser.State {
 
 	preload(game) {
 		game.load.image('sky', 'assets/sky.jpg');
-		game.load.image('block', 'assets/block.png');
+		game.load.image('block', 'assets/house.png');
 		game.load.image('stone', 'assets/stone.png');
 		game.load.spritesheet('button', 'assets/button.png', 49, 45);
 		game.load.image('stick_icon', 'assets/stick_icon.png');
 		game.load.image('stone_icon', 'assets/stone_icon.png');
 		game.load.image('remove_icon', 'assets/remove_icon.png');
+		game.load.spritesheet('fire', 'assets/fire.png', 128, 128, 30);
 	}
 
 	create(game) {
@@ -46,12 +48,16 @@ export default class MainState extends Phaser.State {
     let itemKey = game.input.keyboard.addKey(Phaser.Keyboard.E);
     itemKey.onDown.add(this.nextBuildItem, this);
 
+
 		this.game.add.sprite(0, 0, 'sky');
 
 		this.planet = new Planet(this, (game.width-600)/2, 300);
 
 		this.builder = new Builder(game);
-		this.builder.createBlock(400, 200);
+		let block = this.builder.createBlock(400, 380);
+		Level.addBlock(block);
+		//TODO
+		//block.tint = 0xFF0000;
 
 		const startX = 650;
 		const startY = 25;

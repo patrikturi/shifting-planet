@@ -1,4 +1,6 @@
 
+import Level from './Level';
+
 const STICK_COLOR = '#825830';
 
 const STICK_MAX_LENGTH = 90;
@@ -18,6 +20,7 @@ export default class Builder {
     this.currentItemIndex = -1;
     this.currentItem = null;
     this.createdItems = [];
+    this.blocks = [];
 
     this.menuRect = new Phaser.Rectangle(625, 10, 215, 75);
 
@@ -28,6 +31,8 @@ export default class Builder {
     this.previewStone.visible = false;
 
     this.nextItem();
+
+    game.time.events.loop(Phaser.Timer.SECOND / 10.0, this.checkBlocksAlive, this);
   }
 
   nextItem() {
@@ -101,6 +106,16 @@ export default class Builder {
     });
   }
 
+  checkBlocksAlive() {
+    for(const b of this.blocks) {
+      const ang = b.angle;
+      if(ang < -45 || ang > 45) {
+        // TODO: wait until angularVelocity > 0.25
+        Level.blockDestroyed(b);
+      }
+    }
+  }
+
   update() {
     // TODO: onMouseMoved
     let x = this.game.input.mousePointer.x;
@@ -119,12 +134,34 @@ export default class Builder {
 
   createBlock(x, y) {
     let block = this.game.add.sprite(x, y, 'block');
-    block.scale.setTo(0.75);
+    const scale = 1;
+    block.scale.setTo(scale);
     this.game.physics.box2d.enable(block);
+    block.body.clearFixtures();
+    block.body.addRectangle(28, 19, 0, 9);
+    block.body.addPolygon([-19, 0, 19, 0, 0, -19]);
+
     block.body.mass = BLOCK_MASS;
     block.body.friction = 0.5;
-    block.scale.setTo(0.8);//1.05
+    block.scale.setTo(scale+0.05);
+
+    block.body.setCategoryContactCallback(1, this.blockContactCallback, this);
+    this.blocks.push(block);
 		return block;
+  }
+
+  blockContactCallback(body1, body2, fixture1, fixture2, begin) {
+    if(!body1.sprite || body1.sprite.key != 'block') {
+      return;
+    }
+
+    let vel = Phaser.Point.subtract(body1.velocity, body2.velocity);
+    // TODO: only speed against the contact (aka manifold) normal should count
+    let mag = vel.getMagnitude();
+    if(mag > 120) {
+      mag = Math.round(mag);
+      Level.blockDestroyed(body1.sprite);
+    }
   }
 
   createStick(x, y) {
