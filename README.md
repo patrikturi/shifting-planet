@@ -1,6 +1,10 @@
 # Shifting Planet
 
-This Game is made for a one week long game jam with the theme "shapeshift".
+Your buildings are on a constantly changing surface. Use your construction tools to prevent any houses from getting destroyed by the terrain.
+
+This game was originally made for a one week long game jam with the theme "shapeshift".
+
+Status: gameplay is not complete, still work in progress.
 
 
 ## Development:
@@ -13,3 +17,7 @@ This Game is made for a one week long game jam with the theme "shapeshift".
 * npm check
 * npm test
 * npm deploy
+
+## Screenshot
+
+![Screenshot 1](screen1.jpg?raw=true)
